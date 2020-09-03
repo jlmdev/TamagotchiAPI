@@ -2,7 +2,7 @@ using System;
 
 namespace TamagotchiAPI.Models
 {
-    public class pet
+    public class Pet
     {
         public int Id { get; set; }
         public string Name { get; set; }
