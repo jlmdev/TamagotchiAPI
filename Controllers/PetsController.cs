@@ -168,6 +168,91 @@ namespace TamagotchiAPI.Controllers
             return NoContent();
         }
 
+        // Adding Playtimes to Pet
+        // POST /api/Pets/5/Playtimes
+        [HttpPost("{id}/Playtimes")]
+        public async Task<ActionResult<Playtime>> CreatePlaytimeForPet(int id, Playtime playtime)
+        {
+            // Find the pet by ID
+            var pet = await _context.Pets.FindAsync(id);
+
+            // If the pet doesn't exist, return 404
+            if (pet == null)
+            {
+                return NotFound();
+            }
+            // Associate the playtime to the pet
+            playtime.PetId = pet.Id;
+
+            // Adjust levels for pet
+            pet.HappinessLevel += 5;
+            pet.HungerLevel += 3;
+
+            // Add the playtime to the database
+            _context.Playtimes.Add(playtime);
+            await _context.SaveChangesAsync();
+
+            // return the new playtime to the response of the API
+            return Ok(playtime);
+        }
+
+        // Adding Feedings to Pet
+        // POST /api/Pets/5/Feedings
+        [HttpPost("{id}/Feedings")]
+        public async Task<ActionResult<Feeding>> CreateFeedingForPet(int id, Feeding feeding)
+        {
+            // Find the pet by ID
+            var pet = await _context.Pets.FindAsync(id);
+
+            // If the pet doesn't exist, return 404
+            if (pet == null)
+            {
+                return NotFound();
+            }
+            // Associate the feeding to the pet
+            feeding.PetId = pet.Id;
+
+            // Adjust levels for pet
+            pet.HappinessLevel += 3;
+            pet.HungerLevel -= 5;
+
+            // Add the feeding to the database
+            _context.Feedings.Add(feeding);
+            await _context.SaveChangesAsync();
+
+            // return the new scolding to the response of the API
+            return Ok(feeding);
+        }
+
+
+        // Adding Scoldings to Pet
+        // POST /api/Pets/5/Scoldings
+        [HttpPost("{id}/Scoldings")]
+        public async Task<ActionResult<Scolding>> CreateScoldingForPet(int id, Scolding scolding)
+        {
+            // Find the pet by ID
+            var pet = await _context.Pets.FindAsync(id);
+
+            // If the pet doesn't exist, return 404
+            if (pet == null)
+            {
+                return NotFound();
+            }
+            // Associate the scolding to the pet
+            scolding.PetId = pet.Id;
+
+            // Adjust levels for pet
+            pet.HappinessLevel -= 5;
+
+
+            // Add the scolding to the database
+            _context.Scoldings.Add(scolding);
+            await _context.SaveChangesAsync();
+
+            // return the new scolding to the response of the API
+            return Ok(scolding);
+        }
+
         // Private helper method that looks up an existing pet by the supplied id
         private bool PetExists(int id)
         {
